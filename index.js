@@ -9,6 +9,30 @@ const app = express();
 // Middleware - Plugin
 app.use(express.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  fs.appendFile(
+    "log.txt",
+    `${Date.now()}*${req.ip}*${req.method}*${req.path}\n`,
+    (err, data) => {
+      next();
+    }
+  );
+});
+
+// app.use((req, res, next) => {
+//   console.log("Middleware 1");
+//   // return res.json({ msg: "Middleware 1 end" });
+//   req.myUserName = "Hello John";
+//   next();
+// });
+
+// app.use((req, res, next) => {
+//   console.log("Middleware 2");
+//   // return res.end("Middleware 2 end");
+//   console.log("req.myUserName", req.myUserName);
+//   next();
+// });
+
 // Routes
 
 app.get("/", (req, res) => {
